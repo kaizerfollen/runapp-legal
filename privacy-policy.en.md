@@ -7,7 +7,7 @@ document explains what data we collect when you use the Runcell mobile
 application, why, and how we manage it.
 
 If anything is unclear or you need help, contact us at
-**kaizerakafollen+runapp@gmail.com**.
+**kaizerakafollen@gmail.com**.
 
 ---
 
@@ -149,7 +149,7 @@ You can obtain your data:
 - In-app: the History, Wallet, Achievements and Territory History screens
   show all of it
 - Request a machine-readable export — email
-  **kaizerakafollen+runapp@gmail.com**
+  **kaizerakafollen@gmail.com**
 
 ### 7.2 Modification
 
@@ -166,7 +166,7 @@ access to your Apple ID — Runcell disappears from the list in iOS Settings.
 This is Apple's requirement and it happens automatically.
 
 If deletion does not work for any reason — email
-**kaizerakafollen+runapp@gmail.com** and we will delete your account
+**kaizerakafollen@gmail.com** and we will delete your account
 manually within 7 days.
 
 ### 7.4 Withdrawal of consent
@@ -181,7 +181,7 @@ walk, without the photo library you cannot attach a picture.
 Runcell is intended for users **over 13 years old** (per COPPA and GDPR
 Article 8). We do not knowingly collect data from children under 13. If you
 are a parent and learn that your child registered, email
-**kaizerakafollen+runapp@gmail.com** — we will delete the account.
+**kaizerakafollen@gmail.com** — we will delete the account.
 
 ## 9. International data transfers
 
@@ -206,7 +206,7 @@ Clauses (SCCs) for transfers outside the EEA.
 - Regular dependency updates
 
 No system offers 100% guarantees. If you suspect your account is
-compromised — email **kaizerakafollen+runapp@gmail.com** immediately.
+compromised — email **kaizerakafollen@gmail.com** immediately.
 
 ## 11. Changes to this policy
 
@@ -222,7 +222,7 @@ The last-updated date is at the top of the document.
 
 For any questions about your data or this policy:
 
-**Email**: kaizerakafollen+runapp@gmail.com
+**Email**: kaizerakafollen@gmail.com
 
 We respond within 24–48 hours on business days. For GDPR and CCPA requests
 — within 30 days, as required by law.

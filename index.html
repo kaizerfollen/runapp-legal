@@ -1,20 +1,4 @@
 <!DOCTYPE html>
-<!--
-  Runcell — главная страница.
-
-  БЕЗ FRONT MATTER НАМЕРЕННО
-
-  Jekyll обрабатывает только файлы с «---» в начале. Без него HTML
-  копируется на сайт дословно, и тема репозитория его не оборачивает.
-  Это важно: документы (privacy-policy.en.md и прочие) должны
-  продолжать рендериться темой по прежним адресам — на них ссылается
-  уже собранное приложение, и сменить ссылки можно только новой
-  сборкой.
-
-  Всё в одном файле, без внешних зависимостей: ни шрифтов, ни библиотек,
-  ни аналитики. Страница обязана открыться у ревьюера Apple с первого
-  раза и за секунду.
--->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -47,8 +31,6 @@
   a:hover{text-decoration:underline}
   .wrap{max-width:940px;margin:0 auto;padding:0 22px}
 
-  /* Соты на фоне — тот же мотив, что на карте в приложении.
-     Чистый CSS: картинку пришлось бы грузить, а это лишний запрос. */
   header{
     position:relative;overflow:hidden;
     padding:96px 0 72px;
@@ -110,17 +92,28 @@
     font-weight:800;font-size:13px;
   }
 
-  /* Ролик появляется, только если файл на месте: <video> с битым src
-     показал бы пустую рамку, а это хуже отсутствия блока.
-     Скрипт внизу страницы убирает секцию, если файл не загрузился. */
-  #promo video{
-    width:100%;max-width:330px;border-radius:22px;
-    border:1px solid var(--line);display:block;
+  .shots{
+    display:flex;gap:16px;overflow-x:auto;
+    padding:4px 2px 16px;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+  }
+  .shots::-webkit-scrollbar{height:6px}
+  .shots::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
+  .shot{flex:0 0 200px;margin:0;scroll-snap-align:start}
+  .shot img{
+    width:200px;height:auto;display:block;
+    border-radius:20px;border:1px solid var(--line);background:var(--card);
+  }
+  .shot figcaption{
+    margin-top:10px;color:var(--muted);font-size:13px;line-height:1.45;
   }
 
   footer{padding:52px 0 64px;color:var(--muted);font-size:14px}
-  .links{display:flex;flex-wrap:wrap;gap:22px;margin-bottom:26px}
+  .links{display:flex;flex-wrap:wrap;gap:22px;margin-bottom:14px}
   .links a{color:var(--text)}
+  .links-ru{margin-bottom:26px;font-size:13px;color:var(--muted)}
+  .links-ru a{color:var(--muted);text-decoration:underline}
 </style>
 </head>
 <body>
@@ -135,7 +128,7 @@
       takes them back.
     </p>
     <div class="cta">
-      <a class="btn btn-main" href="mailto:kaizerakafollen+runapp@gmail.com?subject=Runcell%20early%20access">Get early access</a>
+      <a class="btn btn-main" href="mailto:kaizerakafollen@gmail.com?subject=Runcell%20early%20access">Get early access</a>
       <a class="btn btn-ghost" href="#how">How it works</a>
     </div>
     <p class="note">Coming to the App Store. iPhone and Apple Watch.</p>
@@ -231,11 +224,36 @@
   </div>
 </section>
 
-<section id="promo" hidden>
+<section id="screens">
   <div class="wrap">
-    <h2>Forty seconds</h2>
-    <p class="sub">One real route, played back on the real map.</p>
-    <video src="promo.mp4" controls playsinline preload="metadata"></video>
+    <h2>What it looks like</h2>
+    <p class="sub">Real screens, real routes. Swipe.</p>
+    <div class="shots">
+      <figure class="shot">
+        <img src="shots/map.webp" width="440" height="956" loading="lazy" alt="Your territory and everyone else’s, live on one map">
+        <figcaption>Your territory and everyone else’s, live on one map</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="shots/history.webp" width="440" height="956" loading="lazy" alt="Everything you have recorded, walk by walk">
+        <figcaption>Everything you have recorded, walk by walk</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="shots/walk.webp" width="440" height="956" loading="lazy" alt="Each walk in detail — route, pace, calories, cells taken">
+        <figcaption>Each walk in detail — route, pace, calories, cells taken</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="shots/run.webp" width="440" height="956" loading="lazy" alt="A short run and the six cells it claimed">
+        <figcaption>A short run and the six cells it claimed</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="shots/leaders.webp" width="440" height="956" loading="lazy" alt="Leaderboards by coins, distance and territory">
+        <figcaption>Leaderboards by coins, distance and territory</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="shots/profile.webp" width="440" height="956" loading="lazy" alt="Your rank, your districts, today’s quests">
+        <figcaption>Your rank, your districts, today’s quests</figcaption>
+      </figure>
+    </div>
   </div>
 </section>
 
@@ -246,7 +264,7 @@
       Something broken, a question, a report about another player — write to
       us. We answer within 24–48 hours on business days.
     </p>
-    <a class="btn btn-ghost" href="mailto:kaizerakafollen+runapp@gmail.com?subject=Runcell%20support">kaizerakafollen+runapp@gmail.com</a>
+    <a class="btn btn-ghost" href="mailto:kaizerakafollen@gmail.com?subject=Runcell%20support">kaizerakafollen@gmail.com</a>
   </div>
 </section>
 
@@ -255,24 +273,15 @@
     <div class="links">
       <a href="privacy-policy.en">Privacy Policy</a>
       <a href="terms-of-service.en">Terms of Service</a>
-      <a href="privacy-policy.ru">Политика конфиденциальности</a>
-      <a href="terms-of-service.ru">Условия использования</a>
       <a href="investors.html">For investors</a>
+    </div>
+    <div class="links-ru" lang="ru">
+      Русский: <a href="privacy-policy.ru">политика конфиденциальности</a>,
+      <a href="terms-of-service.ru">условия использования</a>
     </div>
     <div>© 2026 Ivan Avtaikin. Runcell is a fitness app, not a medical device.</div>
   </div>
 </footer>
-
-<script>
-  // Показываем ролик, только если файл действительно лежит рядом.
-  // Пустая рамка видео на странице выглядит как сломанный сайт — хуже,
-  // чем отсутствие блока.
-  (function () {
-    var s = document.getElementById('promo');
-    var v = s.querySelector('video');
-    v.addEventListener('loadedmetadata', function () { s.hidden = false; });
-  })();
-</script>
 
 </body>
 </html>
