@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<!--
+  Runcell — страница для инвесторов.
+
+  ЗАЧЕМ ОТДЕЛЬНО ОТ ГЛАВНОЙ
+
+  Ревьюер Apple попадает сюда по ссылке Marketing URL из App Store
+  Connect, и ему нужно увидеть приложение, а не разговор про рынок и
+  раунды. Инвестор приходит по прямой ссылке и ищет ровно обратное.
+  Одна страница на двоих обслужила бы плохо обоих.
+
+  В подвале главной ссылка сюда есть — прятать незачем, но и на первом
+  экране ей не место.
+
+  ⚠️ ЧТО НАДО ЗАПОЛНИТЬ РУКАМИ — помечено словом ЗАПОЛНИТЬ в
+  комментариях ниже. Я намеренно не придумывал ни цифр рынка, ни метрик:
+  выдуманное число в этом месте стоит дороже пустого места.
+
+  Без front matter — чтобы Jekyll скопировал файл дословно.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Runcell — for investors</title>
+<meta name="description" content="Runcell turns walking into territory control. Working iOS app, own backend, live testers. Two founders.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0B0D0F">
+<style>
+  :root{--bg:#0B0D0F;--card:#14181C;--line:#242A30;--text:#F2F5F7;--muted:#8B959E;--lime:#C6F432}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased}
+  a{color:var(--lime)}
+  .wrap{max-width:780px;margin:0 auto;padding:0 22px}
+  header{padding:72px 0 44px;border-bottom:1px solid var(--line)}
+  .logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;
+    letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--muted)}
+  .logo i{width:13px;height:15px;background:var(--lime);font-style:normal;
+    clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+  h1{margin:24px 0 0;font-size:clamp(30px,5vw,46px);line-height:1.1;
+    letter-spacing:-.025em;font-weight:800}
+  .lede{margin:18px 0 0;color:var(--muted);font-size:18px}
+  section{padding:52px 0;border-bottom:1px solid var(--line)}
+  h2{margin:0 0 16px;font-size:23px;font-weight:800;letter-spacing:-.02em}
+  p{margin:0 0 16px}
+  .muted{color:var(--muted)}
+  ul{margin:0 0 16px;padding-left:20px;color:var(--muted)}
+  li{margin-bottom:8px}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:22px;margin-bottom:16px}
+  .box h3{margin:0 0 8px;font-size:16px;font-weight:700}
+  .box p{margin:0;color:var(--muted);font-size:15px}
+  .row{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+  footer{padding:44px 0 60px;color:var(--muted);font-size:14px}
+  footer a{color:var(--text)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <span class="logo"><i></i>Runcell</span>
+    <h1>Walking is the habit.<br>Territory is the reason.</h1>
+    <p class="lede">
+      A working iOS app, our own backend, and a handful of people who walk
+      further than they used to because of it.
+    </p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>The problem we picked</h2>
+    <p>
+      Fitness apps are good at measuring and bad at making anyone come back.
+      A step counter asks you to care about a number that resets every
+      night. Most people stop caring within a month.
+    </p>
+    <p class="muted">
+      We replaced the number with something people already understand
+      without being taught: a place that is yours, and someone who can take
+      it. The walk is unchanged. The reason to take it is not.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What it does</h2>
+    <p class="muted">
+      The map is a grid of hexagons roughly 150 metres across. Walk through
+      one and it fills with your colour. A cell belongs to whoever passed
+      through it last, so your street is yours only until a neighbour goes
+      out.
+    </p>
+    <div class="row">
+      <div class="box">
+        <h3>Conflict, not achievement</h3>
+        <p>Losing a cell is a notification, and getting it back is one walk. That loop needs no reminder to fire.</p>
+      </div>
+      <div class="box">
+        <h3>Groups hold ground</h3>
+        <p>Clans colour districts together. Retention through other people is cheaper than retention through streaks.</p>
+      </div>
+      <div class="box">
+        <h3>Local by nature</h3>
+        <p>Territory only matters against people nearby. Growth is dense and neighbourhood-shaped, not thinly global.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Where we are</h2>
+    <ul>
+      <li>iOS app and Apple Watch companion — built and running on real devices</li>
+      <li>Own backend in Go, PostgreSQL with PostGIS, deployed and serving</li>
+      <li>Server-side anti-cheat: speed, distance-to-cell ratio, submission frequency</li>
+      <li>Clans, chat, feed, moderation tools — reports and blocks, as required for user content</li>
+      <li>Sign in with Apple, account deletion with access revocation</li>
+      <li><!-- ЗАПОЛНИТЬ: число живых тестировщиков и за какой срок -->A small group of live testers walking daily</li>
+    </ul>
+    <p class="muted">
+      Submitting to the App Store now.
+      <!-- ЗАПОЛНИТЬ после выкладки: заменить на дату релиза и ссылку на App Store -->
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Team</h2>
+    <div class="row">
+      <div class="box">
+        <h3>Ivan Avtaikin</h3>
+        <p>Product and engineering. Built the iOS app, the watch app, the backend and the anti-cheat.</p>
+      </div>
+      <div class="box">
+        <h3><!-- ЗАПОЛНИТЬ: имя -->Co-founder</h3>
+        <p>Community and communications. Brings the first users in and talks to them — the half of this that code cannot do.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--
+  ЗАПОЛНИТЬ ЦЕЛИКОМ ИЛИ УДАЛИТЬ.
+
+  Раздел про рынок и планы намеренно оставлен пустым: придуманные цифры
+  здесь хуже, чем их отсутствие. Первый же вопрос «откуда это число»
+  стоит дороже, чем всё, что число могло бы добавить.
+
+  Если заполняешь — держись проверяемого: размер категории со ссылкой на
+  источник, из чего складывается выручка, на что уходят деньги в
+  ближайшие 12 месяцев.
+-->
+
+<section>
+  <div class="wrap">
+    <h2>Talk to us</h2>
+    <p class="muted">
+      Happy to show the app running, walk through the mechanics live, or
+      answer anything about how it is built.
+    </p>
+    <p><a href="mailto:kaizerakafollen+runapp@gmail.com?subject=Runcell">kaizerakafollen+runapp@gmail.com</a></p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><a href="./">← Runcell</a></p>
+    <p>© 2026 Ivan Avtaikin.</p>
+  </div>
+</footer>
+
+</body>
+</html>
