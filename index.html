@@ -127,6 +127,32 @@
   }
 
   footer{padding:52px 0 64px;color:var(--muted);font-size:14px}
+
+  /* Липкая полоса внизу — единственный способ скачать после того, как
+     первый экран уполз наверх. В подвале значок не дублируется: у самого
+     низа страницы полоса висит прямо над ним, и два одинаковых значка
+     оказывались в сотне пикселей друг от друга.
+
+     Появляется, когда шапка уходит из виду: пока значок в ней виден,
+     дублировать его незачем. Переключает наблюдатель в конце файла.
+
+     Снизу добавлен safe-area-inset — на iPhone без него полоса
+     заезжает под домашний индикатор. */
+  .sticky-cta{
+    position:fixed;left:0;right:0;bottom:0;z-index:50;
+    display:flex;gap:14px;align-items:center;justify-content:center;
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    background:rgba(11,13,15,.92);backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);
+    transform:translateY(110%);transition:transform .25s ease;
+  }
+  .sticky-cta.show{transform:translateY(0)}
+  .sticky-cta span{color:var(--text);font-weight:700;font-size:15px}
+  .sticky-cta .badge{height:40px;width:120px}
+  /* На узких экранах текст убираем — значок говорит сам за себя. */
+  @media (max-width:420px){ .sticky-cta span{display:none} }
+  /* Тем, кто просил систему убрать анимацию, не двигаем ничего. */
+  @media (prefers-reduced-motion:reduce){ .sticky-cta{transition:none} }
   .links{display:flex;flex-wrap:wrap;gap:22px;margin-bottom:14px}
   .links a{color:var(--text)}
   .links-ru{margin-bottom:26px;font-size:13px;color:var(--muted)}
@@ -316,6 +342,35 @@
     <div>© 2026 Ivan Avtaikin. Runcell is a fitness app, not a medical device.</div>
   </div>
 </footer>
+
+<div class="sticky-cta" id="stickyCta" aria-hidden="true">
+  <span>Your city is a board.</span>
+  <a href="https://apps.apple.com/app/id6789668249">
+    <img class="badge" src="badges/app-store-badge-white.svg"
+         alt="Download on the App Store" width="120" height="40">
+  </a>
+</div>
+
+<script>
+  // Полоса показывается, когда первый экран ушёл из виду.
+  //
+  // IntersectionObserver, а не слушатель scroll: тот срабатывает
+  // десятки раз в секунду и заставляет пересчитывать вёрстку.
+  //
+  // Если наблюдателя в браузере нет — ничего не делаем: полоса
+  // останется скрытой, а значок в шапке и в подвале никуда не делся.
+  (function () {
+    var bar = document.getElementById('stickyCta');
+    var hero = document.querySelector('header');
+    if (!bar || !hero || !('IntersectionObserver' in window)) return;
+
+    new IntersectionObserver(function (entries) {
+      var heroVisible = entries[0].isIntersecting;
+      bar.classList.toggle('show', !heroVisible);
+      bar.setAttribute('aria-hidden', heroVisible ? 'true' : 'false');
+    }, { threshold: 0 }).observe(hero);
+  })();
+</script>
 
 </body>
 </html>
