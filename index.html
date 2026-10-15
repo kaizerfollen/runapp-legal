@@ -9,6 +9,8 @@
 <meta property="og:description" content="Every walk you record paints the hexagons you pass through. Hold them, or someone else will take them.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#0B0D0F">
+<!-- Полоска «Открыть в App Store» поверх страницы в Safari на iPhone. -->
+<meta name="apple-itunes-app" content="app-id=6789668249">
 <style>
   :root{
     --bg:#0B0D0F;
@@ -68,6 +70,12 @@
   .btn-main:hover{text-decoration:none;filter:brightness(1.07)}
   .btn-ghost{border:1px solid var(--line);color:var(--text)}
   .btn-ghost:hover{text-decoration:none;border-color:var(--muted)}
+  /* Значок App Store. Высота подобрана под соседнюю кнопку, ширина
+     задана явно по пропорциям макета Apple (119.66 x 40), чтобы
+     страница не дёргалась при загрузке. Менять пропорции нельзя —
+     условие использования макета. Отступ вокруг даёт gap у .cta. */
+  .badge{display:block;height:48px;width:144px}
+
   .note{font-size:13px;color:var(--muted);margin-top:14px}
 
   section{padding:72px 0;border-bottom:1px solid var(--line)}
@@ -137,10 +145,13 @@
       takes them back.
     </p>
     <div class="cta">
-      <a class="btn btn-main" href="mailto:kaizerakafollen@gmail.com?subject=Runcell%20early%20access">Get early access</a>
+      <a href="https://apps.apple.com/app/id6789668249">
+        <img class="badge" src="badges/app-store-badge-white.svg"
+             alt="Download on the App Store" width="144" height="48">
+      </a>
       <a class="btn btn-ghost" href="#how">How it works</a>
     </div>
-    <p class="note">Coming to the App Store. iPhone and Apple Watch.</p>
+    <p class="note">On the App Store. iPhone and Apple Watch.</p>
   </div>
 </header>
 
