@@ -1,0 +1,30 @@
+/* =========================================================================
+   investors.css — страница для инвесторов.
+
+   Только то, чем она отличается от общего base.css: узкая колонка для
+   длинного текста, свои размеры заголовков и списки.
+   ========================================================================= */
+
+.intro{padding:72px 0 28px}
+.intro h1{margin-top:24px;font-size:clamp(30px,5vw,46px);line-height:1.1}
+.intro .lede{margin:18px 0 0;color:var(--muted);font-size:18px}
+
+/* Линий между блоками нет — как и на главной: разделяют отступы.
+   Без линии прежние 52 сверху и снизу давали дыру в сотню пикселей,
+   поэтому отступы меньше. */
+.section{padding:36px 0}
+.section h2{margin-bottom:16px;font-size:23px}
+.section p{margin:0 0 16px}
+
+.facts{margin:0 0 16px;padding-left:20px;color:var(--muted)}
+.facts li{margin-bottom:8px}
+
+/* Карточки здесь чуть уже, чем на главной: колонка текста узкая. */
+.section .grid{--grid-min:230px;gap:14px}
+.section .card{padding:22px}
+.section .card h3{font-size:16px}
+.section .card p{margin:0}
+
+footer{padding:44px 0 60px}
+footer a{color:var(--text)}
+footer p{margin:0 0 16px}

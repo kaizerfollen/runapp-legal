@@ -9,41 +9,20 @@
 <meta name="theme-color" content="#0B0D0F">
 <link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<style>
-  :root{--bg:#0B0D0F;--card:#14181C;--line:#242A30;--text:#F2F5F7;--muted:#8B959E;--lime:#C6F432}
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);
-    font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased}
-  a{color:var(--lime)}
-  .wrap{max-width:780px;margin:0 auto;padding:0 22px}
-  header{padding:72px 0 44px;border-bottom:1px solid var(--line)}
-  .logo{display:inline-flex;align-items:center;gap:10px;font-weight:800;
-    letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--muted)}
-  .logo img{width:28px;height:28px;border-radius:7px;display:block}
-  h1{margin:24px 0 0;font-size:clamp(30px,5vw,46px);line-height:1.1;
-    letter-spacing:-.025em;font-weight:800}
-  .lede{margin:18px 0 0;color:var(--muted);font-size:18px}
-  section{padding:52px 0;border-bottom:1px solid var(--line)}
-  h2{margin:0 0 16px;font-size:23px;font-weight:800;letter-spacing:-.02em}
-  p{margin:0 0 16px}
-  .muted{color:var(--muted)}
-  ul{margin:0 0 16px;padding-left:20px;color:var(--muted)}
-  li{margin-bottom:8px}
-  .box{background:var(--card);border:1px solid var(--line);border-radius:16px;
-    padding:22px;margin-bottom:16px}
-  .box h3{margin:0 0 8px;font-size:16px;font-weight:700}
-  .box p{margin:0;color:var(--muted);font-size:15px}
-  .row{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
-  footer{padding:44px 0 60px;color:var(--muted);font-size:14px}
-  footer a{color:var(--text)}
-</style>
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/investors.css">
 </head>
 <body>
 
-<header>
-  <div class="wrap">
-    <span class="logo"><picture><source type="image/webp" srcset="icons/logo-96.webp"><img src="icons/logo-96.png" width="28" height="28" alt=""></picture>Runcell</span>
+<header class="intro">
+  <div class="wrap wrap--narrow">
+    <a class="brand" href="./">
+      <picture>
+        <source type="image/webp" srcset="icons/logo-96.webp">
+        <img src="icons/logo-96.png" width="28" height="28" alt="">
+      </picture>
+      Runcell
+    </a>
     <h1>Walking is the habit.<br>Territory is the reason.</h1>
     <p class="lede">
       A working iOS app, our own backend, and a handful of people who walk
@@ -52,8 +31,11 @@
   </div>
 </header>
 
-<section>
-  <div class="wrap">
+
+<main>
+
+<section class="section">
+  <div class="wrap wrap--narrow">
     <h2>The problem we picked</h2>
     <p>
       Fitness apps are good at measuring and bad at making anyone come back.
@@ -68,8 +50,9 @@
   </div>
 </section>
 
-<section>
-  <div class="wrap">
+
+<section class="section">
+  <div class="wrap wrap--narrow">
     <h2>What it does</h2>
     <p class="muted">
       The map is a grid of hexagons roughly 150 metres across. Walk through
@@ -77,27 +60,28 @@
       through it last, so your street is yours only until a neighbour goes
       out.
     </p>
-    <div class="row">
-      <div class="box">
+    <div class="grid">
+      <article class="card">
         <h3>Conflict, not achievement</h3>
         <p>Losing a cell is a notification, and getting it back is one walk. That loop needs no reminder to fire.</p>
-      </div>
-      <div class="box">
+      </article>
+      <article class="card">
         <h3>Groups hold ground</h3>
         <p>Clans colour districts together. Retention through other people is cheaper than retention through streaks.</p>
-      </div>
-      <div class="box">
+      </article>
+      <article class="card">
         <h3>Local by nature</h3>
         <p>Territory only matters against people nearby. Growth is dense and neighbourhood-shaped, not thinly global.</p>
-      </div>
+      </article>
     </div>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
+
+<section class="section">
+  <div class="wrap wrap--narrow">
     <h2>Where we are</h2>
-    <ul>
+    <ul class="facts">
       <li>iOS app and Apple Watch companion — built and running on real devices</li>
       <li>Own backend in Go, PostgreSQL with PostGIS, deployed and serving</li>
       <li>Server-side anti-cheat: speed, distance-to-cell ratio, submission frequency</li>
@@ -105,30 +89,30 @@
       <li>Sign in with Apple, account deletion with access revocation</li>
       <li>A small group of live testers walking daily</li>
     </ul>
-    <p class="muted">
-      Published on the App Store.
-      </p>
+    <p class="muted">Published on the App Store.</p>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
+
+<section class="section">
+  <div class="wrap wrap--narrow">
     <h2>Team</h2>
-    <div class="row">
-      <div class="box">
+    <div class="grid">
+      <article class="card">
         <h3>Ivan Avtaikin</h3>
         <p>Product and engineering. Built the iOS app, the watch app, the backend and the anti-cheat.</p>
-      </div>
-      <div class="box">
+      </article>
+      <article class="card">
         <h3>Co-founder</h3>
         <p>Community and communications. Brings the first users in and talks to them — the half of this that code cannot do.</p>
-      </div>
+      </article>
     </div>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
+
+<section class="section">
+  <div class="wrap wrap--narrow">
     <h2>Talk to us</h2>
     <p class="muted">
       Happy to show the app running, walk through the mechanics live, or
@@ -138,8 +122,11 @@
   </div>
 </section>
 
+</main>
+
+
 <footer>
-  <div class="wrap">
+  <div class="wrap wrap--narrow">
     <p><a href="./">← Runcell</a></p>
     <p>© 2026 Ivan Avtaikin.</p>
   </div>
