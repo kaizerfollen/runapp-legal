@@ -1,11 +1,13 @@
 /* =========================================================================
    landing.js — поведение главной страницы.
 
-   Четыре независимые части, у каждой своя функция:
+   Пять независимых частей, у каждой своя функция:
      • initHexLayer     — анимированные соты на фоне;
      • initFloatingCta  — липкая полоса «Скачать» и кнопка «Наверх»;
      • initBackToTop    — плавный возврат наверх;
-     • initNavHighlight — подсветка пункта меню текущей секции.
+     • initNavHighlight — подсветка пункта меню текущей секции;
+     • initSliders      — стрелки, точки и перетаскивание мышью у лент
+                          скриншотов.
 
    Подключается с defer: DOM уже готов, первую отрисовку не задерживает.
    Каждая часть сама проверяет, есть ли на странице её элементы, — убрал
@@ -272,8 +274,187 @@
   }
 
 
+  /* ---- Слайдеры скриншотов ----------------------------------------------
+
+     Лента — обычная горизонтальная прокрутка со scroll-snap (см.
+     landing.css). Пальцем она листается и без скрипта. Здесь добавляется
+     то, чего не хватает на компьютере:
+       • стрелки — шаг на один кадр;
+       • точки — сколько кадров всего и какие сейчас видны целиком;
+       • перетаскивание мышью — то же движение, что свайп на телефоне.
+
+     Колесо мыши нарочно не перехватывается: человек крутит колесо, чтобы
+     листать страницу вниз, и лента, которая вдруг «съедает» прокрутку,
+     раздражает сильнее, чем помогает.
+
+     Какие кадры видны, узнаём через IntersectionObserver с корнем в самой
+     ленте — по той же причине, что и везде здесь: без слушателя scroll. */
+
+  // Кадр считается видимым, когда на экране не меньше 90% его ширины.
+  var SLIDE_VISIBLE_RATIO = 0.9;
+  // Сдвиг мышью, после которого жест считается перетаскиванием, а не
+  // щелчком.
+  var DRAG_START_PX = 4;
+  // Короткий рывок мышью тоже листает на кадр — как свайп пальцем.
+  var FLICK_SHARE = 0.15;
+
+  function createElement(tag, className, attrs) {
+    var el = document.createElement(tag);
+    el.className = className;
+    Object.keys(attrs || {}).forEach(function (name) {
+      el.setAttribute(name, attrs[name]);
+    });
+    return el;
+  }
+
+  function buildSliderControls(count) {
+    var root = createElement('div', 'slider-controls');
+    var dotsBox = createElement('div', 'slider-dots');
+    var dots = [];
+    for (var i = 0; i < count; i++) {
+      var dot = createElement('button', 'slider-dot', {
+        type: 'button',
+        'aria-label': 'Screenshot ' + (i + 1) + ' of ' + count,
+      });
+      dots.push(dot);
+      dotsBox.appendChild(dot);
+    }
+    var prev = createElement('button', 'slider-btn', { type: 'button', 'aria-label': 'Previous' });
+    var next = createElement('button', 'slider-btn', { type: 'button', 'aria-label': 'Next' });
+    prev.textContent = '\u2190';
+    next.textContent = '\u2192';
+    root.appendChild(dotsBox);
+    root.appendChild(prev);
+    root.appendChild(next);
+    return { root: root, dots: dots, prev: prev, next: next };
+  }
+
+  function setupSlider(slider) {
+    var track = slider.querySelector('.carousel');
+    if (!track) return;
+    var slides = Array.prototype.slice.call(track.children);
+    if (slides.length < 2) return;
+
+    var controls = buildSliderControls(slides.length);
+    slider.appendChild(controls.root);
+    slider.classList.add('is-enhanced');
+
+    var visible = {};       // индексы кадров, видимых целиком
+    var firstVisible = 0;
+
+    function offsetOf(index) {
+      return slides[index].offsetLeft - slides[0].offsetLeft;
+    }
+
+    function goTo(index) {
+      var target = Math.max(0, Math.min(slides.length - 1, index));
+      track.scrollTo({
+        left: offsetOf(target),
+        behavior: reducedMotion.matches ? 'auto' : 'smooth',
+      });
+    }
+
+    function nearestIndex(scrollLeft) {
+      var best = 0;
+      slides.forEach(function (_, i) {
+        if (Math.abs(offsetOf(i) - scrollLeft) < Math.abs(offsetOf(best) - scrollLeft)) best = i;
+      });
+      return best;
+    }
+
+    function updateControls() {
+      var shown = Object.keys(visible).map(Number).sort(function (a, b) { return a - b; });
+      // Посреди анимации может не быть ни одного кадра целиком —
+      // тогда оставляем прежнее состояние, чтобы точки не мигали.
+      if (!shown.length) return;
+      firstVisible = shown[0];
+      controls.dots.forEach(function (dot, i) {
+        if (visible[i]) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+      controls.prev.disabled = !!visible[0];
+      controls.next.disabled = !!visible[slides.length - 1];
+    }
+
+    // Стрелки и точки.
+    controls.prev.addEventListener('click', function () { goTo(firstVisible - 1); });
+    controls.next.addEventListener('click', function () { goTo(firstVisible + 1); });
+    controls.dots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () { goTo(i); });
+    });
+
+    // Какие кадры видны.
+    if (canObserve) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          var index = slides.indexOf(entry.target);
+          if (entry.intersectionRatio >= SLIDE_VISIBLE_RATIO) visible[index] = true;
+          else delete visible[index];
+        });
+        updateControls();
+      }, { root: track, threshold: [0, SLIDE_VISIBLE_RATIO, 1] });
+      slides.forEach(function (slide) { observer.observe(slide); });
+    }
+
+    // Если все кадры и так помещаются, управление прячем: листать нечего.
+    function updateStatic() {
+      slider.classList.toggle('is-static', track.scrollWidth <= track.clientWidth + 1);
+    }
+    updateStatic();
+    if ('ResizeObserver' in window) new ResizeObserver(updateStatic).observe(track);
+
+    // Перетаскивание мышью. Только мышь: палец и стилус браузер листает
+    // сам, и вмешательство только испортило бы инерцию свайпа.
+    var drag = null;
+
+    track.addEventListener('pointerdown', function (event) {
+      if (event.pointerType !== 'mouse' || event.button !== 0) return;
+      drag = { x: event.clientX, startLeft: track.scrollLeft, moved: false, id: event.pointerId };
+    });
+
+    track.addEventListener('pointermove', function (event) {
+      if (!drag) return;
+      var dx = event.clientX - drag.x;
+      if (!drag.moved) {
+        if (Math.abs(dx) < DRAG_START_PX) return;
+        drag.moved = true;
+        track.setPointerCapture(drag.id);
+        track.classList.add('is-dragging');
+      }
+      track.scrollLeft = drag.startLeft - dx;
+    });
+
+    function endDrag(event) {
+      if (!drag) return;
+      var finished = drag;
+      drag = null;
+      if (!finished.moved) return;
+
+      var dx = event.clientX - finished.x;
+      var from = nearestIndex(finished.startLeft);
+      var flick = slides[0].offsetWidth * FLICK_SHARE;
+      var target = dx <= -flick ? from + 1
+                 : dx >= flick ? from - 1
+                 : nearestIndex(track.scrollLeft);
+
+      track.classList.remove('is-dragging');
+      goTo(target);
+    }
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+
+    // Браузер по умолчанию тащит картинку как файл — это перебивало жест.
+    track.addEventListener('dragstart', function (event) { event.preventDefault(); });
+  }
+
+  function initSliders() {
+    document.querySelectorAll('.slider').forEach(setupSlider);
+  }
+
+
   initHexLayer();
   initFloatingCta();
   initBackToTop();
   initNavHighlight();
+  initSliders();
 })();
