@@ -11,290 +11,26 @@
 <meta name="theme-color" content="#0B0D0F">
 <!-- Полоска «Открыть в App Store» поверх страницы в Safari на iPhone. -->
 <meta name="apple-itunes-app" content="app-id=6789668249">
-<!-- Иконка приложения: во вкладке браузера и на экране «Домой». -->
 <link rel="icon" type="image/png" sizes="64x64" href="icons/favicon-64.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<style>
-  :root{
-    --bg:#0B0D0F;
-    --card:#14181C;
-    --line:#242A30;
-    --text:#F2F5F7;
-    --muted:#8B959E;
-    --lime:#C6F432;
-  }
-  *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
-  body{
-    margin:0;
-    /* Сетка сот на весь сайт. Фоном, а не разметкой: браузер повторяет
-       одну плитку, в DOM не добавляется ни одного узла, запросов ноль —
-       картинка лежит прямо в стилях (меньше килобайта).
-
-       Шапку это не задевает: у неё свой непрозрачный фон и своё поле сот
-       с анимацией захвата. Здесь сетка нарочно статичная — мелькание
-       под текстом мешало бы читать. */
-    background:var(--bg) url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27180%27%20height%3D%27103.923%27%20viewBox%3D%270%200%20180%20103.923%27%3E%3Cg%20fill%3D%27none%27%20stroke%3D%27%23F2F5F7%27%20stroke-opacity%3D%27.05%27%20stroke-width%3D%271.2%27%3E%3Cpolygon%20points%3D%2260.0%2C0.0%2030.0%2C52.0%20-30.0%2C52.0%20-60.0%2C0.0%20-30.0%2C-52.0%2030.0%2C-52.0%22%2F%3E%3Cpolygon%20points%3D%2260.0%2C103.9%2030.0%2C155.9%20-30.0%2C155.9%20-60.0%2C103.9%20-30.0%2C52.0%2030.0%2C52.0%22%2F%3E%3Cpolygon%20points%3D%22240.0%2C0.0%20210.0%2C52.0%20150.0%2C52.0%20120.0%2C0.0%20150.0%2C-52.0%20210.0%2C-52.0%22%2F%3E%3Cpolygon%20points%3D%22240.0%2C103.9%20210.0%2C155.9%20150.0%2C155.9%20120.0%2C103.9%20150.0%2C52.0%20210.0%2C52.0%22%2F%3E%3Cpolygon%20points%3D%22150.0%2C52.0%20120.0%2C103.9%2060.0%2C103.9%2030.0%2C52.0%2060.0%2C0.0%20120.0%2C0.0%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E") repeat;
-    color:var(--text);
-    font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  a{color:var(--lime);text-decoration:none}
-  a:hover{text-decoration:underline}
-  .wrap{max-width:940px;margin:0 auto;padding:0 22px}
-
-  header{
-    position:relative;overflow:hidden;
-    padding:96px 0 72px;
-    background:
-      radial-gradient(900px 420px at 50% -10%, rgba(198,244,50,.10), transparent 70%);
-  }
-
-
-
-
-
-  /* ЗАХВАТ ТЕРРИТОРИИ — один слой на весь документ.
-
-     Раньше поля были отдельно у шапки и у каждой секции, каждое со своим
-     viewBox и своим масштабом. Из-за этого сетка в шапке и в секциях была
-     разного размера, а закрашенные соты не ложились на линии фона.
-
-     Теперь система координат одна: сетку рисует фон body, а соты лежат
-     в пикселях документа ровно по её шагу (60 по горизонтали, 69.282 по
-     вертикали, нечётные столбцы со сдвигом на половину). Масштаб нигде не
-     применяется, поэтому размер соты везде одинаковый. */
-  body{position:relative}
-  .hexlayer{
-    position:absolute;top:0;left:0;right:0;height:100%;
-    overflow:hidden;pointer-events:none;z-index:0;
-    /* Текст идёт колонкой по центру — середину гасим, чтобы соты не
-       попадали под строки. На узком экране колонка занимает всю ширину,
-       и слой пропадает почти целиком. Так и задумано. */
-    -webkit-mask-image:linear-gradient(90deg,#000 0,#000 14%,transparent 31%,transparent 69%,#000 86%,#000 100%);
-    mask-image:linear-gradient(90deg,#000 0,#000 14%,transparent 31%,transparent 69%,#000 86%,#000 100%);
-  }
-  /* Сота: шестиугольник с плоской вершиной, размер — ровно ячейка фона. */
-  .hexlayer i{
-    position:absolute;left:var(--x);top:var(--y);
-    width:120px;height:103.923px;
-    clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);
-    opacity:0;animation:capture 9s ease-in-out infinite;
-  }
-  .hexlayer .c-a{background:var(--lime)}
-  .hexlayer .c-b{background:#FF6B35}
-  @keyframes capture{
-    0%,100%{opacity:0}
-    14%{opacity:.22}
-    58%{opacity:.13}
-    74%{opacity:0}
-  }
-  @media (prefers-reduced-motion:reduce){
-    .hexlayer i{animation:none;opacity:.14}
-  }
-  /* Контент — над слоем. */
-  header .wrap,section > .wrap,footer .wrap{position:relative;z-index:1}
-
-
-  /* Плавная прокрутка по якорям. scroll-padding-top — чтобы заголовок
-     секции не уезжал под липкую навигацию. */
-  html{scroll-behavior:smooth;scroll-padding-top:76px}
-  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-
-  /* ВЕРХНЯЯ НАВИГАЦИЯ
-     Липкая, с размытием вместо рамки — линии между блоками убраны
-     по всему сайту, и возвращать их здесь было бы непоследовательно. */
-  .nav{
-    position:sticky;top:0;z-index:40;
-    background:rgba(11,13,15,.78);
-    backdrop-filter:blur(12px) saturate(140%);
-    -webkit-backdrop-filter:blur(12px) saturate(140%);
-  }
-  .nav-in{display:flex;align-items:center;gap:20px;height:60px}
-  .nav .brand{
-    display:inline-flex;align-items:center;gap:9px;flex:0 0 auto;
-    font-weight:800;letter-spacing:.14em;text-transform:uppercase;
-    font-size:12px;color:var(--text);
-  }
-  /* Иконка приложения вместо лаймового шестиугольника — тот же знак,
-     что человек увидит в App Store и на экране телефона. Скругление как
-     у иконок iOS: у самой картинки белый фон, и без него на тёмной
-     шапке она читалась бы как прямоугольный обрывок. */
-  .nav .brand img{
-    width:28px;height:28px;border-radius:7px;display:block;flex:0 0 auto;
-  }
-  .nav-links{
-    display:flex;gap:20px;margin-left:auto;align-items:center;
-    overflow-x:auto;scrollbar-width:none;
-  }
-  .nav-links::-webkit-scrollbar{display:none}
-  .nav-links a{
-    color:var(--muted);font-size:14px;font-weight:600;white-space:nowrap;
-    transition:color .18s;
-  }
-  .nav-links a:hover{color:var(--text);text-decoration:none}
-  /* Подсвечиваем пункт той секции, что сейчас на экране. */
-  .nav-links a.active{color:var(--lime);text-decoration:none}
-  .nav-cta{
-    flex:0 0 auto;background:var(--lime);color:#0B0D0F;
-    padding:9px 16px;border-radius:999px;font-weight:700;font-size:14px;
-  }
-  .nav-cta:hover{text-decoration:none;filter:brightness(1.07)}
-  /* На узком экране ссылки листаются, кнопку убираем — внизу есть полоса. */
-  @media (max-width:760px){
-    .nav-cta{display:none}
-    .nav-links{gap:16px}
-    .nav-in{gap:14px}
-  }
-
-  /* КНОПКА НАВЕРХ. Сидит над липкой полосой, чтобы не спорить с ней. */
-  .totop{
-    position:fixed;right:16px;bottom:92px;z-index:45;
-    width:44px;height:44px;border-radius:50%;
-    border:1px solid var(--line);background:rgba(20,24,28,.92);
-    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-    color:var(--text);font-size:18px;line-height:1;cursor:pointer;
-    opacity:0;pointer-events:none;transform:translateY(8px);
-    transition:opacity .25s ease,transform .25s ease,border-color .18s;
-  }
-  .totop:hover{border-color:var(--muted)}
-  .totop.show{opacity:1;pointer-events:auto;transform:none}
-  @media (prefers-reduced-motion:reduce){.totop{transition:none}}
-
-  .logo{
-    display:inline-flex;align-items:center;gap:10px;
-    font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:13px;
-    color:var(--muted);
-  }
-  .logo i{
-    width:13px;height:15px;background:var(--lime);
-    clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
-    font-style:normal;
-  }
-  h1{
-    margin:26px 0 0;
-    font-size:clamp(34px,6.2vw,60px);line-height:1.06;
-    letter-spacing:-.025em;font-weight:800;
-  }
-  h1 em{font-style:normal;color:var(--lime)}
-  .lede{
-    margin:22px 0 0;max-width:620px;
-    font-size:clamp(17px,2.2vw,20px);color:var(--muted);
-  }
-  .cta{margin-top:34px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-  .btn{
-    display:inline-block;padding:13px 22px;border-radius:999px;
-    font-weight:700;font-size:15px;
-  }
-  .btn-main{background:var(--lime);color:#0B0D0F}
-  .btn-main:hover{text-decoration:none;filter:brightness(1.07)}
-  .btn-ghost{border:1px solid var(--line);color:var(--text)}
-  .btn-ghost:hover{text-decoration:none;border-color:var(--muted)}
-  /* Значок App Store. Высота подобрана под соседнюю кнопку, ширина
-     задана явно по пропорциям макета Apple (119.66 x 40), чтобы
-     страница не дёргалась при загрузке. Менять пропорции нельзя —
-     условие использования макета. Отступ вокруг даёт gap у .cta. */
-  .badge{display:block;height:48px;width:144px}
-
-  .note{font-size:13px;color:var(--muted);margin-top:14px}
-
-  section{padding:72px 0;}
-  h2{
-    margin:0 0 10px;font-size:clamp(23px,3.4vw,31px);
-    letter-spacing:-.02em;font-weight:800;
-  }
-  .sub{color:var(--muted);margin:0 0 34px;max-width:620px}
-
-  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(255px,1fr))}
-  .card{
-    background:var(--card);border:1px solid var(--line);
-    border-radius:16px;padding:24px;
-  }
-  .card h3{margin:0 0 8px;font-size:17px;font-weight:700}
-  .card p{margin:0;color:var(--muted);font-size:15px}
-  .num{
-    display:inline-flex;align-items:center;justify-content:center;
-    width:26px;height:29px;margin-bottom:14px;
-    background:rgba(198,244,50,.13);color:var(--lime);
-    clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
-    font-weight:800;font-size:13px;
-  }
-
-  .shots{
-    display:flex;gap:16px;overflow-x:auto;
-    padding:4px 2px 16px;
-    scroll-snap-type:x mandatory;
-    -webkit-overflow-scrolling:touch;
-  }
-  .shots::-webkit-scrollbar{height:6px}
-  .shots::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
-  .shot{flex:0 0 200px;margin:0;scroll-snap-align:start}
-  .shot img{
-    width:200px;height:auto;display:block;
-    border-radius:20px;border:1px solid var(--line);background:var(--card);
-  }
-  .shot figcaption{
-    margin-top:10px;color:var(--muted);font-size:13px;line-height:1.45;
-  }
-  /* Часы листаются так же, как скриншоты телефона.
-     nowrap без media-query: на широком экране три карточки влезают и
-     прокрутка не появляется сама собой, на узком — превращается в
-     свайп вместо длинной колонки. */
-  .watch{
-    display:flex;flex-wrap:nowrap;gap:20px;overflow-x:auto;
-    padding-bottom:10px;scroll-snap-type:x mandatory;
-    -webkit-overflow-scrolling:touch;
-  }
-  .watch::-webkit-scrollbar{height:6px}
-  .watch::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
-  .watch figure{flex:0 0 170px;margin:0;scroll-snap-align:start}
-  .watch img{
-    width:170px;height:auto;display:block;
-    border-radius:30px;border:1px solid var(--line);background:#000;
-  }
-  .watch figcaption{
-    margin-top:10px;color:var(--muted);font-size:13px;line-height:1.45;
-  }
-
-  footer{padding:52px 0 64px;color:var(--muted);font-size:14px}
-
-  /* Липкая полоса внизу — единственный способ скачать после того, как
-     первый экран уполз наверх. В подвале значок не дублируется: у самого
-     низа страницы полоса висит прямо над ним, и два одинаковых значка
-     оказывались в сотне пикселей друг от друга.
-
-     Появляется, когда шапка уходит из виду: пока значок в ней виден,
-     дублировать его незачем. Переключает наблюдатель в конце файла.
-
-     Снизу добавлен safe-area-inset — на iPhone без него полоса
-     заезжает под домашний индикатор. */
-  .sticky-cta{
-    position:fixed;left:0;right:0;bottom:0;z-index:50;
-    display:flex;gap:14px;align-items:center;justify-content:center;
-    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
-    background:rgba(11,13,15,.92);backdrop-filter:blur(10px);
-    border-top:1px solid var(--line);
-    transform:translateY(110%);transition:transform .25s ease;
-  }
-  .sticky-cta.show{transform:translateY(0)}
-  .sticky-cta span{color:var(--text);font-weight:700;font-size:15px}
-  .sticky-cta .badge{height:40px;width:120px}
-  /* На узких экранах текст убираем — значок говорит сам за себя. */
-  @media (max-width:420px){ .sticky-cta span{display:none} }
-  /* Тем, кто просил систему убрать анимацию, не двигаем ничего. */
-  @media (prefers-reduced-motion:reduce){ .sticky-cta{transition:none} }
-  .links{display:flex;flex-wrap:wrap;gap:22px;margin-bottom:14px}
-  .links a{color:var(--text)}
-  .links-ru{margin-bottom:26px;font-size:13px;color:var(--muted)}
-  .links-ru a{color:var(--muted);text-decoration:underline}
-</style>
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/landing.css">
+<script src="assets/js/landing.js" defer></script>
 </head>
 <body>
-<div class="hexlayer" aria-hidden="true"><i class="c-b" style="--x:210.0px;--y:311.8px;animation-delay:1.3s"></i><i class="c-b" style="--x:300.0px;--y:155.9px;animation-delay:2.6s"></i><i class="c-b" style="--x:300.0px;--y:155.9px;animation-delay:3.9s"></i><i class="c-a" style="--x:1830.0px;--y:1039.2px;animation-delay:3.1s"></i><i class="c-a" style="--x:1830.0px;--y:935.3px;animation-delay:4.4s"></i><i class="c-a" style="--x:1830.0px;--y:831.4px;animation-delay:5.7s"></i><i class="c-a" style="--x:210.0px;--y:1870.6px;animation-delay:0.7s"></i><i class="c-a" style="--x:210.0px;--y:1662.8px;animation-delay:2.0s"></i><i class="c-a" style="--x:30.0px;--y:1870.6px;animation-delay:3.3s"></i><i class="c-a" style="--x:30.0px;--y:1766.7px;animation-delay:4.6s"></i><i class="c-a" style="--x:120.0px;--y:1818.7px;animation-delay:5.9s"></i><i class="c-b" style="--x:1020.0px;--y:2234.3px;animation-delay:2.9s"></i><i class="c-b" style="--x:1110.0px;--y:2494.2px;animation-delay:4.2s"></i><i class="c-b" style="--x:930.0px;--y:2286.3px;animation-delay:5.5s"></i><i class="c-b" style="--x:930.0px;--y:2286.3px;animation-delay:6.8s"></i><i class="c-b" style="--x:1110.0px;--y:2286.3px;animation-delay:8.1s"></i><i class="c-a" style="--x:30.0px;--y:3117.7px;animation-delay:1.3s"></i><i class="c-a" style="--x:210.0px;--y:2909.8px;animation-delay:2.6s"></i><i class="c-a" style="--x:120.0px;--y:2857.9px;animation-delay:3.9s"></i><i class="c-a" style="--x:120.0px;--y:2961.8px;animation-delay:5.2s"></i><i class="c-a" style="--x:30.0px;--y:2909.8px;animation-delay:6.5s"></i><i class="c-a" style="--x:1110.0px;--y:3845.2px;animation-delay:1.6s"></i><i class="c-a" style="--x:1020.0px;--y:3689.3px;animation-delay:2.9s"></i><i class="c-a" style="--x:930.0px;--y:3741.2px;animation-delay:4.2s"></i><i class="c-a" style="--x:930.0px;--y:3741.2px;animation-delay:5.5s"></i><i class="c-a" style="--x:1020.0px;--y:3897.1px;animation-delay:6.8s"></i><i class="c-b" style="--x:300.0px;--y:4416.7px;animation-delay:2.1s"></i><i class="c-b" style="--x:120.0px;--y:4624.6px;animation-delay:3.4s"></i><i class="c-b" style="--x:210.0px;--y:4572.6px;animation-delay:4.7s"></i><i class="c-b" style="--x:120.0px;--y:4416.7px;animation-delay:6.0s"></i><i class="c-a" style="--x:1830.0px;--y:5300.1px;animation-delay:0.2s"></i><i class="c-a" style="--x:2010.0px;--y:5092.2px;animation-delay:1.5s"></i><i class="c-a" style="--x:1920.0px;--y:5248.1px;animation-delay:2.8s"></i><i class="c-a" style="--x:2010.0px;--y:5300.1px;animation-delay:4.1s"></i><i class="c-a" style="--x:1830.0px;--y:5300.1px;animation-delay:5.4s"></i><i class="c-a" style="--x:120.0px;--y:5871.7px;animation-delay:2.4s"></i><i class="c-a" style="--x:210.0px;--y:6027.5px;animation-delay:3.7s"></i><i class="c-a" style="--x:300.0px;--y:5975.6px;animation-delay:5.0s"></i><i class="c-b" style="--x:1830.0px;--y:6962.8px;animation-delay:1.6s"></i><i class="c-b" style="--x:1920.0px;--y:6910.9px;animation-delay:2.9s"></i><i class="c-b" style="--x:1830.0px;--y:6962.8px;animation-delay:4.2s"></i><i class="c-b" style="--x:1830.0px;--y:6858.9px;animation-delay:5.5s"></i><i class="c-a" style="--x:390.0px;--y:7586.4px;animation-delay:1.3s"></i><i class="c-a" style="--x:390.0px;--y:7690.3px;animation-delay:2.6s"></i><i class="c-a" style="--x:300.0px;--y:7430.5px;animation-delay:3.9s"></i><i class="c-a" style="--x:480.0px;--y:7430.5px;animation-delay:5.2s"></i><i class="c-a" style="--x:300.0px;--y:7430.5px;animation-delay:6.5s"></i></div>
 
-<nav class="nav">
+<!-- Анимированные соты на фоне. Заполняет landing.js под размер страницы. -->
+<div class="hexlayer" aria-hidden="true"></div>
+
+<nav class="nav" aria-label="Main">
   <div class="wrap nav-in">
-    <a class="brand" href="#top"><picture><source type="image/webp" srcset="icons/logo-96.webp"><img src="icons/logo-96.png" width="28" height="28" alt=""></picture>Runcell</a>
+    <a class="brand" href="#top">
+      <picture>
+        <source type="image/webp" srcset="icons/logo-96.webp">
+        <img src="icons/logo-96.png" width="28" height="28" alt="">
+      </picture>
+      Runcell
+    </a>
     <div class="nav-links">
       <a href="#how">How it works</a>
       <a href="#why">Why</a>
@@ -302,11 +38,13 @@
       <a href="#watch">Watch</a>
       <a href="#support">Support</a>
     </div>
-    <a class="nav-cta" href="https://apps.apple.com/app/id6789668249">Get the app</a>
+    <a class="btn btn-main nav-cta" href="https://apps.apple.com/app/id6789668249">Get the app</a>
   </div>
 </nav>
 
-<header id="top">
+
+<!-- ===================== Шапка ===================== -->
+<header class="hero" id="top">
   <div class="wrap">
     <h1>Your city is a board.<br><em>Run to own it.</em></h1>
     <p class="lede">
@@ -325,160 +63,151 @@
   </div>
 </header>
 
-<section id="how">
+
+<main>
+
+<!-- ===================== Как это работает ===================== -->
+<section class="section" id="how">
   <div class="wrap">
     <h2>How it works</h2>
-    <p class="sub">
-      No setup, no equipment. You already know how to do the hard part.
-    </p>
+    <p class="sub">No setup, no equipment. You already know how to do the hard part.</p>
     <div class="grid">
-      <div class="card">
-        <span class="num">1</span>
+      <article class="card">
+        <span class="step">1</span>
         <h3>Press start and move</h3>
-        <p>
-          The app records your route — in your pocket, screen off. Walking,
-          running and cycling all count.
-        </p>
-      </div>
-      <div class="card">
-        <span class="num">2</span>
+        <p>The app records your route — in your pocket, screen off. Walking,
+          running and cycling all count.</p>
+      </article>
+      <article class="card">
+        <span class="step">2</span>
         <h3>Cells fill as you pass</h3>
-        <p>
-          The map is a grid of hexagons about 150 metres across. Cross one
-          and it fills with your colour, right in front of you.
-        </p>
-      </div>
-      <div class="card">
-        <span class="num">3</span>
+        <p>The map is a grid of hexagons about 150 metres across. Cross one
+          and it fills with your colour, right in front of you.</p>
+      </article>
+      <article class="card">
+        <span class="step">3</span>
         <h3>Hold them, or lose them</h3>
-        <p>
-          A cell belongs to whoever passed through it last. Your street is
-          yours only until a neighbour goes for a run.
-        </p>
-      </div>
+        <p>A cell belongs to whoever passed through it last. Your street is
+          yours only until a neighbour goes for a run.</p>
+      </article>
     </div>
   </div>
 </section>
 
-<section id="why">
+
+<!-- ===================== Почему возвращаются ===================== -->
+<section class="section" id="why">
   <div class="wrap">
     <h2>Why people come back</h2>
-    <p class="sub">
-      A step counter asks you to care about a number. This asks you to care
-      about a street.
-    </p>
+    <p class="sub">A step counter asks you to care about a number. This asks
+      you to care about a street.</p>
     <div class="grid">
-      <div class="card">
+      <article class="card">
         <h3>Someone took your block</h3>
-        <p>
-          You find out the moment it happens. Getting it back takes one
-          walk — and that is the whole point.
-        </p>
-      </div>
-      <div class="card">
+        <p>You find out the moment it happens. Getting it back takes one
+          walk — and that is the whole point.</p>
+      </article>
+      <article class="card">
         <h3>Clans</h3>
-        <p>
-          Join forces, colour a district together, argue about it in the
-          clan chat. Territory is easier to hold as a group.
-        </p>
-      </div>
-      <div class="card">
+        <p>Join forces, colour a district together, argue about it in the
+          clan chat. Territory is easier to hold as a group.</p>
+      </article>
+      <article class="card">
         <h3>Honest movement only</h3>
-        <p>
-          Every walk is checked on the server: speed, distance, plausibility.
-          Fake routes earn nothing.
-        </p>
-      </div>
-      <div class="card">
+        <p>Every walk is checked on the server: speed, distance, plausibility.
+          Fake routes earn nothing.</p>
+      </article>
+      <article class="card">
         <h3>Works with what you already use</h3>
-        <p>
-          Recorded a run in another app or on your watch? Import it from
-          Health and the territory counts.
-        </p>
-      </div>
-      <div class="card">
+        <p>Recorded a run in another app or on your watch? Import it from
+          Health and the territory counts.</p>
+      </article>
+      <article class="card">
         <h3>Your map, worth sharing</h3>
-        <p>
-          Every walk turns into a picture of the route and the cells you
-          took, ready for stories.
-        </p>
-      </div>
+        <p>Every walk turns into a picture of the route and the cells you
+          took, ready for stories.</p>
+      </article>
     </div>
   </div>
 </section>
 
-<section id="screens">
+
+<!-- ===================== Скриншоты телефона ===================== -->
+<section class="section" id="screens">
   <div class="wrap">
     <h2>What it looks like</h2>
     <p class="sub">Real screens, real routes. Swipe.</p>
-    <div class="shots">
-      <figure class="shot">
-        <img src="shots/map.webp" width="440" height="956" loading="lazy" alt="Your territory and everyone else’s, live on one map">
+    <div class="carousel">
+      <figure>
+        <img src="shots/map.webp" width="440" height="956" loading="lazy" alt="">
         <figcaption>Your territory and everyone else’s, live on one map</figcaption>
       </figure>
-      <figure class="shot">
-        <img src="shots/history.webp" width="440" height="956" loading="lazy" alt="Everything you have recorded, walk by walk">
+      <figure>
+        <img src="shots/history.webp" width="440" height="956" loading="lazy" alt="">
         <figcaption>Everything you have recorded, walk by walk</figcaption>
       </figure>
-      <figure class="shot">
-        <img src="shots/walk.webp" width="440" height="956" loading="lazy" alt="Each walk in detail — route, pace, calories, cells taken">
+      <figure>
+        <img src="shots/walk.webp" width="440" height="956" loading="lazy" alt="">
         <figcaption>Each walk in detail — route, pace, calories, cells taken</figcaption>
       </figure>
-      <figure class="shot">
-        <img src="shots/run.webp" width="440" height="956" loading="lazy" alt="A short run and the six cells it claimed">
+      <figure>
+        <img src="shots/run.webp" width="440" height="956" loading="lazy" alt="">
         <figcaption>A short run and the six cells it claimed</figcaption>
       </figure>
-      <figure class="shot">
-        <img src="shots/profile.webp" width="440" height="956" loading="lazy" alt="Your rank, your districts, today’s quests">
+      <figure>
+        <img src="shots/profile.webp" width="440" height="956" loading="lazy" alt="">
         <figcaption>Your rank, your districts, today’s quests</figcaption>
       </figure>
     </div>
   </div>
 </section>
 
-<section id="watch">
+
+<!-- ===================== Apple Watch ===================== -->
+<section class="section" id="watch">
   <div class="wrap">
     <h2>On your wrist</h2>
-    <p class="sub">
-      Runcell on Apple Watch works paired with your iPhone. Start, glance,
-      finish — the phone can stay in your pocket, and the summary reaches
-      it on its own.
-    </p>
-    <div class="watch">
+    <p class="sub">Runcell on Apple Watch works paired with your iPhone. Start,
+      glance, finish — the phone can stay in your pocket, and the summary
+      reaches it on its own.</p>
+    <div class="carousel carousel--watch">
       <figure>
-        <img src="shots/watch-start.webp" width="360" height="438" loading="lazy" alt="Pick walk, run or ride and press start">
+        <img src="shots/watch-start.webp" width="360" height="438" loading="lazy" alt="">
         <figcaption>Pick walk, run or ride and press start</figcaption>
       </figure>
       <figure>
-        <img src="shots/watch-live.webp" width="360" height="438" loading="lazy" alt="Time, distance, heart rate and calories while you move">
+        <img src="shots/watch-live.webp" width="360" height="438" loading="lazy" alt="">
         <figcaption>Time, distance, heart rate and calories while you move</figcaption>
       </figure>
       <figure>
-        <img src="shots/watch-done.webp" width="360" height="438" loading="lazy" alt="Finish on the watch and the walk lands on your phone">
+        <img src="shots/watch-done.webp" width="360" height="438" loading="lazy" alt="">
         <figcaption>Finish on the watch and the walk lands on your phone</figcaption>
       </figure>
     </div>
   </div>
 </section>
 
-<section id="support">
+
+<!-- ===================== Поддержка ===================== -->
+<section class="section" id="support">
   <div class="wrap">
     <h2>Support</h2>
-    <p class="sub">
-      Something broken, a question, a report about another player — write to
-      us. We answer within 24–48 hours on business days.
-    </p>
+    <p class="sub">Something broken, a question, a report about another player —
+      write to us. We answer within 24–48 hours on business days.</p>
     <a class="btn btn-ghost" href="mailto:kaizerakafollen@gmail.com?subject=Runcell%20support">kaizerakafollen@gmail.com</a>
   </div>
 </section>
 
+</main>
+
+
 <footer>
   <div class="wrap">
-    <div class="links">
+    <nav class="links" aria-label="Legal">
       <a href="privacy-policy.en">Privacy Policy</a>
       <a href="terms-of-service.en">Terms of Service</a>
       <a href="investors.html">For investors</a>
-    </div>
+    </nav>
     <div class="links-ru" lang="ru">
       Русский: <a href="privacy-policy.ru">политика конфиденциальности</a>,
       <a href="terms-of-service.ru">условия использования</a>
@@ -487,73 +216,17 @@
   </div>
 </footer>
 
-<button class="totop" id="toTop" type="button" aria-label="Back to top">↑</button>
+
+<!-- Плавающие элементы. Показывает и прячет landing.js. -->
+<button class="totop" id="toTop" type="button" aria-label="Back to top" aria-hidden="true">↑</button>
 
 <div class="sticky-cta" id="stickyCta" aria-hidden="true">
   <span>Your city is a board.</span>
   <a href="https://apps.apple.com/app/id6789668249">
-    <img class="badge" src="badges/app-store-badge-white.svg"
+    <img class="badge badge--small" src="badges/app-store-badge-white.svg"
          alt="Download on the App Store" width="120" height="40">
   </a>
 </div>
-
-<script>
-  // Один наблюдатель на всю страницу: он решает, показывать ли липкую
-  // полосу и кнопку наверх, и какой пункт навигации подсветить.
-  //
-  // IntersectionObserver, а не слушатель scroll: тот срабатывает десятки
-  // раз в секунду и заставляет браузер пересчитывать вёрстку.
-  (function () {
-    var bar   = document.getElementById('stickyCta');
-    var toTop = document.getElementById('toTop');
-    var hero  = document.getElementById('top');
-
-    // Полоса и кнопка появляются, когда шапка ушла из виду: пока значок
-    // в ней виден, дублировать его незачем.
-    if (hero && 'IntersectionObserver' in window) {
-      new IntersectionObserver(function (e) {
-        var heroVisible = e[0].isIntersecting;
-        if (bar) {
-          bar.classList.toggle('show', !heroVisible);
-          bar.setAttribute('aria-hidden', heroVisible ? 'true' : 'false');
-        }
-        if (toTop) toTop.classList.toggle('show', !heroVisible);
-      }, { threshold: 0 }).observe(hero);
-    }
-
-    // Наверх — тем же плавным ходом, что и переходы по якорям.
-    // Уважаем системную просьбу убрать анимацию.
-    if (toTop) {
-      toTop.addEventListener('click', function () {
-        var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        window.scrollTo({ top: 0, behavior: calm ? 'auto' : 'smooth' });
-      });
-    }
-
-    // Подсветка пункта навигации по текущей секции.
-    var links = {};
-    document.querySelectorAll('.nav-links a').forEach(function (a) {
-      links[a.getAttribute('href').slice(1)] = a;
-    });
-    var sections = document.querySelectorAll('section[id]');
-    if (sections.length && 'IntersectionObserver' in window) {
-      // Активной считаем секцию, попавшую в верхнюю треть экрана:
-      // нижняя отсечка -62% не даёт подсветиться сразу двум.
-      var navWatch = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (!en.isIntersecting) return;
-          var a = links[en.target.id];
-          if (!a) return;
-          Object.keys(links).forEach(function (k) {
-            links[k].classList.remove('active');
-          });
-          a.classList.add('active');
-        });
-      }, { rootMargin: '-76px 0px -62% 0px', threshold: 0 });
-      sections.forEach(function (sec) { navWatch.observe(sec); });
-    }
-  })();
-</script>
 
 </body>
 </html>

@@ -1,0 +1,100 @@
+/* =========================================================================
+   base.css — общее для всех страниц сайта.
+
+   Здесь только то, что одинаково на лендинге и на странице для
+   инвесторов: цвета, сброс, шрифт, колонка, карточки, кнопки, подвал.
+   Всё, что относится к одной странице, лежит в её собственном файле.
+
+   Правило простое: если стиль понадобился на второй странице — он
+   переезжает сюда, а не копируется.
+   ========================================================================= */
+
+
+/* ---- Токены -------------------------------------------------------------
+   Единственное место, где записаны цвета и формы. В остальных файлах —
+   только var(--…). */
+:root{
+  --bg:#0B0D0F;
+  --card:#14181C;
+  --line:#242A30;
+  --text:#F2F5F7;
+  --muted:#8B959E;
+  --lime:#C6F432;      /* свой цвет — акцент, кнопки, захваченные соты */
+  --rival:#FF6B35;     /* чужой цвет — соты соперника в анимации */
+
+  /* Шестиугольники. Плоская вершина — как соты на карте приложения,
+     острая — для мелких значков, где она лучше читается. */
+  --hex-flat:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);
+  --hex-pointy:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+
+  --radius-card:16px;
+  --wrap:940px;
+}
+
+
+/* ---- Сброс и типографика ----------------------------------------------- */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--lime);text-decoration:none}
+a:hover{text-decoration:underline}
+
+h1{margin:0;font-weight:800;letter-spacing:-.025em}
+h2{margin:0 0 10px;font-weight:800;letter-spacing:-.02em}
+
+
+/* ---- Колонка ------------------------------------------------------------ */
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
+.wrap--narrow{--wrap:780px}
+
+
+/* ---- Знак Runcell -------------------------------------------------------
+   Иконка приложения и название. Скругление как у иконок iOS: у самой
+   картинки белый фон, и без него на тёмном фоне она читалась бы как
+   прямоугольный обрывок. */
+.brand{
+  display:inline-flex;align-items:center;gap:9px;flex:0 0 auto;
+  font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  font-size:12px;color:var(--text);
+}
+.brand:hover{text-decoration:none}
+.brand img{width:28px;height:28px;border-radius:7px;display:block}
+
+
+/* ---- Сетка карточек -----------------------------------------------------
+   Колонок столько, сколько влезает при ширине не меньше --grid-min. */
+.grid{
+  --grid-min:255px;
+  display:grid;gap:16px;
+  grid-template-columns:repeat(auto-fit,minmax(var(--grid-min),1fr));
+}
+.card{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:var(--radius-card);padding:24px;
+}
+.card h3{margin:0 0 8px;font-size:17px;font-weight:700}
+.card p{margin:0;color:var(--muted);font-size:15px}
+
+
+/* ---- Кнопки ------------------------------------------------------------- */
+.btn{
+  display:inline-block;padding:13px 22px;border-radius:999px;
+  font-weight:700;font-size:15px;
+}
+.btn:hover{text-decoration:none}
+.btn-main{background:var(--lime);color:var(--bg)}
+.btn-main:hover{filter:brightness(1.07)}
+.btn-ghost{border:1px solid var(--line);color:var(--text)}
+.btn-ghost:hover{border-color:var(--muted)}
+
+
+/* ---- Вспомогательное ---------------------------------------------------- */
+.muted{color:var(--muted)}
+
+footer{padding:52px 0 64px;color:var(--muted);font-size:14px}
