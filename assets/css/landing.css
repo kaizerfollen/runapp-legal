@@ -139,38 +139,101 @@ footer > .wrap{position:relative;z-index:1}
 }
 
 
-/* ---- Карусели: скриншоты телефона и часов --------------------------------
-   Один компонент на оба ряда, отличаются только размером кадра и
-   скруглением — их задают модификаторы через переменные.
+/* ---- Слайдеры: скриншоты телефона и часов ---------------------------------
 
-   nowrap без media-query: на широком экране карточки влезают и прокрутка
-   не появляется сама собой, на узком — превращается в свайп вместо
-   длинной колонки. */
+   Основа — обычная горизонтальная прокрутка со scroll-snap. Её одной
+   хватает на телефоне: свайп пальцем работает без всякого скрипта.
+
+   На компьютере свайпа нет, и мышью такую ленту не прокрутить вовсе —
+   поэтому landing.js добавляет под лентой стрелки и точки и учит её
+   перетаскиваться мышью. Без JS остаётся прокрутка тачпадом и полосой.
+
+   Размеры задаются переменными:
+     --slide-w  ширина слайда (кадр + подпись);
+     --shot-w   ширина самой картинки;
+   у телефона они совпадают, у часов слайд шире картинки. */
 .carousel{
+  --slide-w:var(--shot-w);
   --shot-w:200px;
   --shot-radius:20px;
   --shot-bg:var(--card);
+  position:relative;            /* offsetLeft слайдов — от ленты */
   display:flex;gap:16px;overflow-x:auto;
   padding:4px 2px 16px;
   scroll-snap-type:x mandatory;
   -webkit-overflow-scrolling:touch;
-}
-.carousel--watch{
-  --shot-w:170px;
-  --shot-radius:30px;
-  --shot-bg:#000;
-  gap:20px;
+  overscroll-behavior-x:contain; /* свайп до края не листает историю браузера */
 }
 .carousel::-webkit-scrollbar{height:6px}
 .carousel::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
-.carousel figure{flex:0 0 var(--shot-w);margin:0;scroll-snap-align:start}
+.carousel figure{flex:0 0 var(--slide-w);margin:0;scroll-snap-align:start}
 .carousel img{
   width:var(--shot-w);height:auto;display:block;
   border-radius:var(--shot-radius);border:1px solid var(--line);
   background:var(--shot-bg);
+  -webkit-user-drag:none;user-select:none;
 }
 .carousel figcaption{
   margin-top:10px;color:var(--muted);font-size:13px;line-height:1.45;
+}
+
+/* Часы: по одному кадру за раз, кадр по центру.
+   180 — предел резкости: исходники шириной 360, на экранах с двойной
+   плотностью крупнее они пойдут мылом. */
+.carousel--watch{
+  --slide-w:100%;
+  --shot-w:180px;
+  --shot-radius:30px;
+  --shot-bg:#000;
+  gap:20px;
+}
+.carousel--watch figure{scroll-snap-align:center}
+.carousel--watch img{margin:0 auto}
+.carousel--watch figcaption{text-align:center;max-width:240px;margin-inline:auto}
+
+/* Когда управление есть, полоса прокрутки лишняя — её заменяют точки. */
+.slider.is-enhanced .carousel{scrollbar-width:none}
+.slider.is-enhanced .carousel::-webkit-scrollbar{display:none}
+
+/* Перетаскивание мышью: снап на время жеста выключается, иначе лента
+   рывками прилипает к слайдам прямо под курсором. */
+.slider.is-enhanced .carousel{cursor:grab}
+.carousel.is-dragging{cursor:grabbing;scroll-snap-type:none;scroll-behavior:auto}
+.carousel.is-dragging figure{pointer-events:none}
+
+/* Панель под лентой: точки слева, стрелки справа. */
+.slider-controls{display:flex;align-items:center;gap:10px;margin-top:6px}
+.slider-dots{display:flex;gap:8px;margin-right:auto}
+.slider-dot{
+  width:8px;height:8px;padding:0;border:0;border-radius:50%;
+  background:var(--line);cursor:pointer;
+  transition:background .2s,transform .2s;
+}
+.slider-dot[aria-current="true"]{background:var(--lime);transform:scale(1.25)}
+.slider-btn{
+  width:40px;height:40px;border-radius:50%;
+  border:1px solid var(--line);background:var(--card);color:var(--text);
+  font-size:16px;line-height:1;cursor:pointer;
+  transition:border-color .18s,opacity .18s;
+}
+.slider-btn:hover:not(:disabled){border-color:var(--muted)}
+.slider-btn:disabled{opacity:.35;cursor:default}
+.slider-dot:focus-visible,.slider-btn:focus-visible,.carousel:focus-visible{
+  outline:2px solid var(--lime);outline-offset:3px;
+}
+/* Всё помещается — листать нечего, управление и «руку» прячем. */
+.slider.is-static .slider-controls{display:none}
+.slider.is-static .carousel{cursor:auto}
+
+/* На сенсорном экране стрелки не нужны — есть свайп; точки оставляем
+   как подсказку, сколько ещё кадров впереди. */
+@media (hover:none) and (pointer:coarse){.slider-btn{display:none}}
+
+/* Секция часов на широком экране: текст слева, слайдер справа. */
+.split{display:grid;gap:8px}
+@media (min-width:760px){
+  .split{grid-template-columns:minmax(0,1fr) 300px;gap:56px;align-items:center}
+  .split .sub{margin-bottom:0}
 }
 
 
