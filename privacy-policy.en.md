@@ -1,13 +1,13 @@
 # Runcell Privacy Policy
 
-**Last updated: 29 September 2026**
+**Last updated: 28 October 2026**
 
 We, Ivan Avtaikin (hereinafter "Runcell", "we"), value your privacy. This
 document explains what data we collect when you use the Runcell mobile
 application, why, and how we manage it.
 
 If anything is unclear or you need help, contact us at
-**kaizerakafollen@gmail.com**.
+**runcell.support@gmail.com**.
 
 ---
 
@@ -149,7 +149,7 @@ You can obtain your data:
 - In-app: the History, Wallet, Achievements and Territory History screens
   show all of it
 - Request a machine-readable export — email
-  **kaizerakafollen@gmail.com**
+  **runcell.support@gmail.com**
 
 ### 7.2 Modification
 
@@ -166,7 +166,7 @@ access to your Apple ID — Runcell disappears from the list in iOS Settings.
 This is Apple's requirement and it happens automatically.
 
 If deletion does not work for any reason — email
-**kaizerakafollen@gmail.com** and we will delete your account
+**runcell.support@gmail.com** and we will delete your account
 manually within 7 days.
 
 ### 7.4 Withdrawal of consent
@@ -181,7 +181,7 @@ walk, without the photo library you cannot attach a picture.
 Runcell is intended for users **over 13 years old** (per COPPA and GDPR
 Article 8). We do not knowingly collect data from children under 13. If you
 are a parent and learn that your child registered, email
-**kaizerakafollen@gmail.com** — we will delete the account.
+**runcell.support@gmail.com** — we will delete the account.
 
 ## 9. International data transfers
 
@@ -206,7 +206,7 @@ Clauses (SCCs) for transfers outside the EEA.
 - Regular dependency updates
 
 No system offers 100% guarantees. If you suspect your account is
-compromised — email **kaizerakafollen@gmail.com** immediately.
+compromised — email **runcell.support@gmail.com** immediately.
 
 ## 11. Changes to this policy
 
@@ -222,7 +222,7 @@ The last-updated date is at the top of the document.
 
 For any questions about your data or this policy:
 
-**Email**: kaizerakafollen@gmail.com
+**Email**: runcell.support@gmail.com
 
 We respond within 24–48 hours on business days. For GDPR and CCPA requests
 — within 30 days, as required by law.

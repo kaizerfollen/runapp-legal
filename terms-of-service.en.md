@@ -1,12 +1,12 @@
 # Runcell Terms of Service
 
-**Last updated: 29 September 2026**
+**Last updated: 28 October 2026**
 
 Welcome to Runcell. By registering and using the app, you agree to these
 Terms of Service. If you do not agree, please do not use the app.
 
 Operator: **Ivan Avtaikin**, jurisdiction: **Russian Federation**.
-Contact: **kaizerakafollen@gmail.com**.
+Contact: **runcell.support@gmail.com**.
 
 ---
 
@@ -84,7 +84,7 @@ We reserve the right to:
 - Moderate proactively, without waiting for reports
 
 You have the right to **appeal** a moderation decision — email
-**kaizerakafollen@gmail.com** with details.
+**runcell.support@gmail.com** with details.
 
 ## 5. Your content
 
@@ -145,7 +145,7 @@ You can delete your account at any time:
 
 **Profile → Settings → Delete Account**
 
-Or email **kaizerakafollen@gmail.com**.
+Or email **runcell.support@gmail.com**.
 
 If you signed in with Apple, deleting your account also revokes the app's
 access to your Apple ID.
@@ -198,13 +198,13 @@ you disagree — delete your account.
 Applicable law: the laws of the **Russian Federation**.
 
 We prefer to resolve disputes amicably — email
-**kaizerakafollen@gmail.com**. If that is not possible, disputes are
+**runcell.support@gmail.com**. If that is not possible, disputes are
 heard by courts at our registered location.
 
 ## 13. Contact
 
 All questions, complaints and moderation appeals — to
-**kaizerakafollen@gmail.com**.
+**runcell.support@gmail.com**.
 
 We respond during business hours within 24–48 hours.
 
