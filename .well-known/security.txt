@@ -1,0 +1,7 @@
+# Runcell — как сообщить об уязвимости / how to report a vulnerability.
+# Пишите на почту ниже: опишите проблему и шаги воспроизведения.
+# Please email the address below with a description and steps to reproduce.
+Contact: mailto:runcell.support@gmail.com
+Expires: 2027-10-28T00:00:00.000Z
+Preferred-Languages: ru, en
+Canonical: https://runcell.online/.well-known/security.txt
